@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">News</string>
+    <string name="error">Something went wrong, try again!</string>
+    <string name="headline_image_description">Image related to headline news</string>
 </resources>
