@@ -10,18 +10,20 @@ import java.io.IOException
 
 class NewsPagingSource(
     private val backend: NewsApi
-) : PagingSource<String, ArticleResponse>() {
-    override suspend fun load(params: LoadParams<String>): LoadResult<String, ArticleResponse> {
-        return try {
-            val response = backend.getHeadlines()
+) : PagingSource<Int, ArticleResponse>() {
 
-            with(response.articles) {
-                LoadResult.Page(
-                    data = this,
-                    prevKey = null,
-                    nextKey = this.last().url
-                )
-            }
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ArticleResponse> {
+        return try {
+            val pageNumber = params.key ?: 1
+
+            val response = backend.getHeadlines(pageNumber)
+            val articles = response.articles
+
+            LoadResult.Page(
+                data = articles,
+                prevKey = if (pageNumber == 1) null else pageNumber - 1,
+                nextKey = if (articles.isEmpty()) null else pageNumber + 1
+            )
 
         } catch (e: IOException) {
             LoadResult.Error(e)
@@ -32,9 +34,5 @@ class NewsPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<String, ArticleResponse>): String? {
-        val anchorPosition = state.anchorPosition ?: return null
-        val response = state.closestItemToPosition(anchorPosition) ?: return null
-        return response.url
-    }
+    override fun getRefreshKey(state: PagingState<Int, ArticleResponse>): Int? = null
 }

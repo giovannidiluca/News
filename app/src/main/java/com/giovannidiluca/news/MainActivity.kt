@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -100,9 +101,11 @@ fun ErrorMessage() {
 @Composable
 fun Loading() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator(modifier = Modifier
-            .size(40.dp)
-            .padding(24.dp))
+        CircularProgressIndicator(
+            modifier = Modifier
+                .size(40.dp)
+                .padding(24.dp)
+        )
     }
 }
 
@@ -115,7 +118,9 @@ fun HeadlineList(articles: LazyPagingItems<Article>) {
             key = articles.itemKey(),
             contentType = articles.itemContentType { it }
         ) { index ->
-            articles[index]?.let { HeadlineCard(article = it) }
+            articles[index]?.let {
+                if (it.active) HeadlineCard(article = it)
+            }
         }
 
         when (articles.loadState.refresh) {
@@ -156,11 +161,12 @@ fun HeadlineCard(article: Article) {
             SubcomposeAsyncImage(
                 model = article.urlToImage,
                 contentDescription = stringResource(R.string.headline_image_description),
-                contentScale = ContentScale.Fit,
+                contentScale = ContentScale.FillWidth,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(160.dp)
                     .clip(shape = RoundedCornerShape(8.dp)),
-                loading = { CircularProgressIndicator() },
+                loading = { Loading() },
             )
             Text(text = article.title, fontWeight = FontWeight.Bold)
             Text(text = article.description, style = MaterialTheme.typography.bodySmall)
@@ -178,7 +184,8 @@ fun HeadlineCardPreview() {
                 title = "Kate, Princess of Wales, announces cancer was found during surgery, undergoing preventative chemotherapy - CBS News",
                 description = "The video announcement from Kate, Princess of Wales, comes after months of widespread speculation about her health and controversy over doctored images released by Kensington Palace.",
                 urlToImage = "",
-                publishedAt = "2024-03-22T19:36:00Z"
+                publishedAt = "2024-03-22T19:36:00Z",
+                active = true
             )
         )
     }

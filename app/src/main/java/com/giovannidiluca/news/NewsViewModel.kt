@@ -20,20 +20,18 @@ class NewsViewModel @Inject constructor(
     private val newsRepository: NewsRepositoryImpl
 ) : ViewModel() {
 
-    init {
-        fetchArticles()
+    companion object {
+        const val PAGE_SIZE = 10
     }
 
     fun fetchArticles(): Flow<PagingData<Article>> {
         return Pager(
-            config = PagingConfig(pageSize = 10),
+            config = PagingConfig(pageSize = PAGE_SIZE),
             pagingSourceFactory = { newsRepository.getArticles() }
         )
             .flow
             .map { pagingData ->
-                pagingData
-                    .map { it.toArticle() }
-                    .map { it }
+                pagingData.map { it.toArticle() }
             }
             .cachedIn(viewModelScope)
     }

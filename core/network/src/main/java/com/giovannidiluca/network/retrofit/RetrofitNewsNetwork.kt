@@ -4,6 +4,7 @@ import com.giovannidiluca.network.NewsNetworkDataSource
 import com.giovannidiluca.network.NewsPagingSource
 import com.giovannidiluca.network.model.NewsResponse
 import com.giovannidiluca.network.retrofit.RetrofitNewsNetwork.Companion.API_KEY
+import com.giovannidiluca.network.retrofit.RetrofitNewsNetwork.Companion.PAGE_SIZE
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -15,6 +16,8 @@ import javax.inject.Singleton
 interface NewsApi {
     @GET("top-headlines")
     suspend fun getHeadlines(
+        @Query("page") page: Int,
+        @Query("pageSize") pageSize: Int = PAGE_SIZE,
         @Query("country") country: String = Locale.getDefault().country,
         @Query("apiKey") apiKey: String = API_KEY
     ): NewsResponse
@@ -32,5 +35,6 @@ class RetrofitNewsNetwork @Inject constructor() : NewsNetworkDataSource {
     companion object {
         const val BASE_URL = "https://newsapi.org/v2/"
         const val API_KEY = "29c8cb10ad8e4397a2732a30d24b8e51"
+        const val PAGE_SIZE = 10
     }
 }
