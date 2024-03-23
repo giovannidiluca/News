@@ -45,5 +45,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     //Hilt
     implementation("com.google.dagger:hilt-android:2.51")
+    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
     ksp("com.google.dagger:hilt-compiler:2.51")
 }
