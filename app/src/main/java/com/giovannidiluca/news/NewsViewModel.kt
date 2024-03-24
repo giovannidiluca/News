@@ -31,7 +31,8 @@ class NewsViewModel @Inject constructor(
         )
             .flow
             .map { pagingData ->
-                pagingData.map { it.toArticle() }
+                pagingData
+                    .map { it.toArticle() }
             }
             .cachedIn(viewModelScope)
     }

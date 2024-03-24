@@ -13,6 +13,7 @@ fun ArticleResponse.toArticle() = Article(
     description = description ?: "",
     urlToImage = urlToImage ?: imageFallback,
     publishedAt = DateFormatterUtils.transformDate(publishedAt),
+    author = author ?: "",
     active = title != removedTag
 )
 
