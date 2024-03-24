@@ -20,17 +20,8 @@ import coil.compose.SubcomposeAsyncImage
 import com.giovannidiluca.data.model.Article
 
 @Composable
-fun NewsDetailsScreen() {
-    DetailsCard(
-        article = Article(
-            title = "Kate, Princess of Wales, announces cancer was found during surgery, undergoing preventative chemotherapy - CBS News",
-            description = "The video announcement from Kate, Princess of Wales, comes after months of widespread speculation about her health and controversy over doctored images released by Kensington Palace.",
-            urlToImage = "",
-            publishedAt = "2024-03-22T19:36:00Z",
-            author = "John Doe",
-            active = true,
-        )
-    )
+fun NewsDetailsScreen(article: Article) {
+    DetailsCard(article = article)
 }
 
 @Composable
@@ -53,7 +44,7 @@ fun DetailsCard(article: Article) {
                 .clip(shape = RoundedCornerShape(8.dp)),
             loading = { CircularProgressIndicator() },
         )
-        Text(
+        if (article.author.isNotEmpty()) Text(
             text = stringResource(R.string.author) + article.author,
             style = MaterialTheme.typography.bodySmall
         )

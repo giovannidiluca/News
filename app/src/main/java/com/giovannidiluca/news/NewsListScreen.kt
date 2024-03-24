@@ -47,6 +47,11 @@ import com.giovannidiluca.data.model.Article
 import com.giovannidiluca.news.ui.theme.NewsTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import java.net.URLEncoder
+
+private val URL_CHARACTER_ENCODING = Charsets.UTF_8.name()
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -74,7 +79,9 @@ fun NewsListScreen(navController: NavController, viewModel: NewsViewModel = hilt
                     .pullRefresh(state)
                     .fillMaxSize()
             ) {
-                HeadlineList(articles = items, navController)
+                HeadlineList(articles = items) { article ->
+                    navigateToArticle(navController, article)
+                }
                 PullRefreshIndicator(refreshing, state, Modifier.align(Alignment.TopCenter))
             }
         }
@@ -101,7 +108,10 @@ private fun Loading() {
 }
 
 @Composable
-private fun HeadlineList(articles: LazyPagingItems<Article>, navController: NavController) {
+private fun HeadlineList(
+    articles: LazyPagingItems<Article>,
+    onClickItem: (Article) -> Unit
+) {
     LazyColumn {
         item { Title() }
         items(
@@ -112,7 +122,8 @@ private fun HeadlineList(articles: LazyPagingItems<Article>, navController: NavC
             articles[index]?.let {
                 if (it.active) HeadlineCard(
                     article = it,
-                    onClick = { navigateToArticle(navController) })
+                    onClick = { onClickItem(it) }
+                )
             }
         }
 
@@ -130,8 +141,12 @@ private fun HeadlineList(articles: LazyPagingItems<Article>, navController: NavC
     }
 }
 
-fun navigateToArticle(navController: NavController) {
-    navController.navigate("news_details")
+fun navigateToArticle(navController: NavController, article: Article) {
+    val articleJson = Json.encodeToString(article)
+    val articleEncoded = URLEncoder.encode(articleJson, URL_CHARACTER_ENCODING)
+    navController.navigate("news_details_route/$articleEncoded") {
+        launchSingleTop = true
+    }
 }
 
 @Preview
