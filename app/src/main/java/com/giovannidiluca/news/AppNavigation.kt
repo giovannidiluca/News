@@ -20,9 +20,13 @@ internal const val ARTICLE_JSON_ARG = "articleJson"
 fun AppNavigation() {
     val navController = rememberNavController()
 
-    NavHost(navController, startDestination = "news_list") {
-        composable("news_list") {
-            NewsListScreen(navController)
+    NavHost(navController, startDestination = "authentication_route") {
+        composable("authentication_route") {
+            AuthenticationScreen(navController = navController)
+        }
+
+        composable("news_list_route") {
+            NewsListScreen(navController = navController)
         }
 
         composable(
