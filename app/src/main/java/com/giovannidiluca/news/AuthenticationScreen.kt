@@ -66,6 +66,9 @@ fun BiometricPrompt(
 
 fun NavController.navigateToList() {
     navigate("news_list_route") {
+        popUpTo(graph.startDestinationId) {
+            inclusive = true
+        }
         launchSingleTop = true
     }
 }
