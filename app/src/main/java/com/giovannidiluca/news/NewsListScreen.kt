@@ -16,6 +16,7 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Snackbar
@@ -117,12 +118,12 @@ private fun HeadlineList(
         items(
             count = articles.itemCount,
             key = articles.itemKey(),
-            contentType = articles.itemContentType { it }
+            contentType = articles.itemContentType { article -> article }
         ) { index ->
-            articles[index]?.let {
-                if (it.active) HeadlineCard(
-                    article = it,
-                    onClick = { onClickItem(it) }
+            articles[index]?.let { article ->
+                if (article.active) HeadlineCard(
+                    article = article,
+                    onClick = { onClickItem(article) }
                 )
             }
         }
@@ -165,7 +166,8 @@ fun HeadlineCard(article: Article, onClick: () -> Unit) {
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth()
-            .clickable { onClick() }
+            .clickable { onClick() },
+        elevation = CardDefaults.cardElevation(8.dp)
     ) {
         Column(
             modifier = Modifier.padding(8.dp),
