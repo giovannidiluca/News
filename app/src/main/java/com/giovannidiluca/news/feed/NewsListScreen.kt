@@ -1,5 +1,7 @@
-package com.giovannidiluca.news
+package com.giovannidiluca.news.feed
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -19,7 +22,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,6 +48,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import coil.compose.SubcomposeAsyncImage
 import com.giovannidiluca.data.model.Article
+import com.giovannidiluca.news.R
 import com.giovannidiluca.news.ui.theme.NewsTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -81,7 +85,7 @@ fun NewsListScreen(navController: NavController, viewModel: NewsViewModel = hilt
                     .fillMaxSize()
             ) {
                 HeadlineList(articles = items) { article ->
-                    navigateToArticle(navController, article)
+                    navController.navigateToArticle(article)
                 }
                 PullRefreshIndicator(refreshing, state, Modifier.align(Alignment.TopCenter))
             }
@@ -90,11 +94,9 @@ fun NewsListScreen(navController: NavController, viewModel: NewsViewModel = hilt
 }
 
 
-@Preview
-@Composable
-private fun ErrorMessage() {
-    Snackbar { Text(text = stringResource(R.string.error)) }
-}
+private fun showErrorMessage(context: Context) =
+    Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show()
+
 
 @Preview
 @Composable
@@ -110,53 +112,54 @@ private fun Loading() {
 
 @Composable
 private fun HeadlineList(
-    articles: LazyPagingItems<Article>,
-    onClickItem: (Article) -> Unit
+    articles: LazyPagingItems<Article>, onClickItem: (Article) -> Unit
 ) {
+    val context = LocalContext.current
+
     LazyColumn {
-        item { Title() }
-        items(
-            count = articles.itemCount,
+        item { TopBar() }
+        items(count = articles.itemCount,
             key = articles.itemKey(),
-            contentType = articles.itemContentType { article -> article }
-        ) { index ->
+            contentType = articles.itemContentType { article -> article }) { index ->
             articles[index]?.let { article ->
-                if (article.active) HeadlineCard(
-                    article = article,
-                    onClick = { onClickItem(article) }
-                )
+                if (article.active) HeadlineCard(article = article,
+                    onClick = { onClickItem(article) })
             }
         }
 
         when (articles.loadState.refresh) {
             is LoadState.Loading -> item { Loading() }
-            is LoadState.Error -> item { ErrorMessage() }
+            is LoadState.Error -> item { showErrorMessage(context) }
             is LoadState.NotLoading -> {}
         }
 
         when (articles.loadState.append) {
             is LoadState.Loading -> item { Loading() }
-            is LoadState.Error -> item { ErrorMessage() }
+            is LoadState.Error -> item { showErrorMessage(context) }
             is LoadState.NotLoading -> {}
         }
     }
 }
 
-fun navigateToArticle(navController: NavController, article: Article) {
+fun NavController.navigateToArticle(article: Article) {
     val articleJson = Json.encodeToString(article)
     val articleEncoded = URLEncoder.encode(articleJson, URL_CHARACTER_ENCODING)
-    navController.navigate("news_details_route/$articleEncoded") {
+    navigate("news_details_route/$articleEncoded") {
         launchSingleTop = true
     }
 }
 
 @Preview
 @Composable
-private fun Title() {
-    Text(
-        modifier = Modifier.padding(start = 16.dp, top = 8.dp),
-        text = stringResource(id = R.string.app_name),
-        style = MaterialTheme.typography.headlineMedium
+private fun TopBar() {
+    TopAppBar(
+        title = {
+            Text(
+                modifier = Modifier.padding(start = 16.dp, top = 8.dp),
+                text = stringResource(id = R.string.app_name),
+                style = MaterialTheme.typography.headlineMedium
+            )
+        }, backgroundColor = MaterialTheme.colorScheme.background
     )
 }
 
@@ -166,12 +169,10 @@ fun HeadlineCard(article: Article, onClick: () -> Unit) {
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth()
-            .clickable { onClick() },
-        elevation = CardDefaults.cardElevation(8.dp)
+            .clickable { onClick() }, elevation = CardDefaults.cardElevation(8.dp)
     ) {
         Column(
-            modifier = Modifier.padding(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.padding(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             SubcomposeAsyncImage(
                 model = article.urlToImage,
@@ -193,16 +194,14 @@ fun HeadlineCard(article: Article, onClick: () -> Unit) {
 @Composable
 fun HeadlineCardPreview() {
     NewsTheme {
-        HeadlineCard(
-            Article(
-                title = "Kate, Princess of Wales, announces cancer was found during surgery, undergoing preventative chemotherapy - CBS News",
-                description = "The video announcement from Kate, Princess of Wales, comes after months of widespread speculation about her health and controversy over doctored images released by Kensington Palace.",
-                urlToImage = "",
-                publishedAt = "2024-03-22T19:36:00Z",
-                author = "John Doe",
-                active = true,
-            ),
-            onClick = {}
-        )
+        HeadlineCard(Article(
+            title = "Kate, Princess of Wales, announces cancer was found during surgery, undergoing preventative chemotherapy - CBS News",
+            description = "The video announcement from Kate, Princess of Wales, comes after months of widespread speculation about her health and controversy over doctored images released by Kensington Palace.",
+            urlToImage = "",
+            publishedAt = "2024-03-22T19:36:00Z",
+            author = "John Doe",
+            active = true,
+            sourceName = "BBC"
+        ), onClick = {})
     }
 }

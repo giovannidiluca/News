@@ -1,4 +1,4 @@
-package com.giovannidiluca.news
+package com.giovannidiluca.news.feed
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +9,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.giovannidiluca.data.NewsRepositoryImpl
 import com.giovannidiluca.data.model.Article
-import com.giovannidiluca.data.toArticle
+import com.giovannidiluca.data.utils.toArticle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

@@ -1,4 +1,4 @@
-package com.giovannidiluca.news
+package com.giovannidiluca.news.navigation
 
 import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
@@ -8,6 +8,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.giovannidiluca.data.model.Article
+import com.giovannidiluca.news.authentication.AuthenticationScreen
+import com.giovannidiluca.news.feed.NewsDetailsScreen
+import com.giovannidiluca.news.feed.NewsListScreen
 import kotlinx.serialization.json.Json
 import java.net.URLDecoder
 

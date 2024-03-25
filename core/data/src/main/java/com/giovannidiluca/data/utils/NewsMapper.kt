@@ -1,4 +1,4 @@
-package com.giovannidiluca.data
+package com.giovannidiluca.data.utils
 
 import com.giovannidiluca.data.model.Article
 import com.giovannidiluca.network.model.ArticleResponse
@@ -14,6 +14,7 @@ fun ArticleResponse.toArticle() = Article(
     urlToImage = urlToImage ?: imageFallback,
     publishedAt = DateFormatterUtils.transformDate(publishedAt),
     author = author ?: "",
-    active = title != removedTag
+    active = title != removedTag,
+    sourceName = source.name
 )
 

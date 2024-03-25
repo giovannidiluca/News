@@ -1,4 +1,4 @@
-package com.giovannidiluca.news
+package com.giovannidiluca.news.feed
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.TopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,10 +19,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.giovannidiluca.data.model.Article
+import com.giovannidiluca.news.R
 
 @Composable
 fun NewsDetailsScreen(article: Article) {
-    DetailsCard(article = article)
+    Column {
+        TopBar(article.sourceName)
+        DetailsCard(article = article)
+    }
+}
+
+
+@Composable
+private fun TopBar(title: String) {
+    TopAppBar(
+        title = {
+            Text(
+                modifier = Modifier.padding(start = 16.dp, top = 8.dp),
+                text = title,
+                style = MaterialTheme.typography.headlineMedium
+            )
+        }, backgroundColor = MaterialTheme.colorScheme.background
+    )
 }
 
 @Composable
