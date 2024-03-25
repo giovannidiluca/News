@@ -1,12 +1,12 @@
-package com.giovannidiluca.data.utils
+package com.giovannidiluca.utils
 
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 object DateFormatterUtils {
-    const val MONTH_DAY_YEAR_FORMAT = "MMM, dd yyyy"
-    const val STANDARD_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+    private const val MONTH_DAY_YEAR_FORMAT = "MMM, dd yyyy"
+    private const val STANDARD_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'"
 
     private fun formatter(pattern: String) = DateTimeFormatter.ofPattern(pattern)
 

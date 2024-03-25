@@ -1,6 +1,5 @@
-package com.giovannidiluca.data
+package com.giovannidiluca.utils
 
-import com.giovannidiluca.data.utils.DateFormatterUtils
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

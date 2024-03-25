@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.TopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,20 +26,6 @@ fun NewsDetailsScreen(article: Article) {
         TopBar(article.sourceName)
         DetailsCard(article = article)
     }
-}
-
-
-@Composable
-private fun TopBar(title: String) {
-    TopAppBar(
-        title = {
-            Text(
-                modifier = Modifier.padding(start = 16.dp, top = 8.dp),
-                text = title,
-                style = MaterialTheme.typography.headlineMedium
-            )
-        }, backgroundColor = MaterialTheme.colorScheme.background
-    )
 }
 
 @Composable

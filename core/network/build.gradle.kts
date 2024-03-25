@@ -47,4 +47,5 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.51")
     implementation("androidx.paging:paging-runtime-ktx:3.2.1")
     ksp("com.google.dagger:hilt-compiler:2.51")
+    implementation(project(":core:utils"))
 }

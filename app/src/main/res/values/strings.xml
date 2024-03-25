@@ -3,4 +3,7 @@
     <string name="error">Something went wrong, try again!</string>
     <string name="headline_image_description">Image related to headline news</string>
     <string name="author">"Author: "</string>
+    <string name="biometric_authentication_title">Biometric Authentication</string>
+    <string name="biometric_authentication_body">Log in using your biometric credential</string>
+    <string name="cancel">Cancel</string>
 </resources>

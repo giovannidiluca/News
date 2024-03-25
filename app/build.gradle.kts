@@ -90,5 +90,6 @@ dependencies {
     ksp("com.google.dagger:hilt-compiler:2.51")
     //modules
     implementation(project(":core:data"))
+    implementation(project(":core:utils"))
     implementation(project(":core:network"))
 }
