@@ -9,5 +9,6 @@ data class Article(
     val urlToImage: String,
     val publishedAt: String,
     val author: String,
-    val active: Boolean
+    val active: Boolean,
+    val sourceName: String
 )

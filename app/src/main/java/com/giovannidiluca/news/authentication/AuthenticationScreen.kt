@@ -1,4 +1,4 @@
-package com.giovannidiluca.news
+package com.giovannidiluca.news.authentication
 
 import android.content.Context
 import android.os.Build
@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
+import com.giovannidiluca.news.R
 
 @Composable
 fun AuthenticationScreen(navController: NavController) {
