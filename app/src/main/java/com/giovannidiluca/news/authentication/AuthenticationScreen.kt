@@ -9,6 +9,7 @@ import androidx.biometric.BiometricPrompt
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
@@ -57,9 +58,9 @@ fun BiometricPrompt(
 
     val promptInfo = BiometricPrompt.PromptInfo.Builder()
         .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK)
-        .setTitle("Biometric Authentication")
-        .setSubtitle("Log in using your biometric credential")
-        .setNegativeButtonText("Cancel")
+        .setTitle(stringResource(R.string.biometric_authentication_title))
+        .setSubtitle(stringResource(R.string.biometric_authentication_body))
+        .setNegativeButtonText(stringResource(R.string.cancel))
         .build()
 
     biometricPrompt.authenticate(promptInfo)

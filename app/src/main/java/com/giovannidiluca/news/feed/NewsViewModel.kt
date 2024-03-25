@@ -10,6 +10,7 @@ import androidx.paging.map
 import com.giovannidiluca.data.NewsRepositoryImpl
 import com.giovannidiluca.data.model.Article
 import com.giovannidiluca.data.utils.toArticle
+import com.giovannidiluca.utils.DefaultValues.Companion.PAGE_SIZE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -19,10 +20,6 @@ import javax.inject.Inject
 class NewsViewModel @Inject constructor(
     private val newsRepository: NewsRepositoryImpl
 ) : ViewModel() {
-
-    companion object {
-        const val PAGE_SIZE = 10
-    }
 
     fun fetchArticles(): Flow<PagingData<Article>> {
         return Pager(

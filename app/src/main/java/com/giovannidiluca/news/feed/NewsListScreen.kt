@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -105,7 +104,7 @@ private fun Loading() {
         CircularProgressIndicator(
             modifier = Modifier
                 .size(40.dp)
-                .padding(24.dp)
+                .padding(8.dp)
         )
     }
 }
@@ -117,7 +116,7 @@ private fun HeadlineList(
     val context = LocalContext.current
 
     LazyColumn {
-        item { TopBar() }
+        item { TopBar(stringResource(id = R.string.app_name)) }
         items(count = articles.itemCount,
             key = articles.itemKey(),
             contentType = articles.itemContentType { article -> article }) { index ->
@@ -147,20 +146,6 @@ fun NavController.navigateToArticle(article: Article) {
     navigate("news_details_route/$articleEncoded") {
         launchSingleTop = true
     }
-}
-
-@Preview
-@Composable
-private fun TopBar() {
-    TopAppBar(
-        title = {
-            Text(
-                modifier = Modifier.padding(start = 16.dp, top = 8.dp),
-                text = stringResource(id = R.string.app_name),
-                style = MaterialTheme.typography.headlineMedium
-            )
-        }, backgroundColor = MaterialTheme.colorScheme.background
-    )
 }
 
 @Composable
