@@ -22,9 +22,15 @@ import com.giovannidiluca.news.R
 
 @Composable
 fun NewsDetailsScreen(article: Article) {
-    Column {
-        TopBar(article.sourceName)
-        DetailsCard(article = article)
+    NewsTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
+        ) {
+            Column {
+                TopBar(article.sourceName)
+                DetailsCard(article = article)
+            }
+        }
     }
 }
 
