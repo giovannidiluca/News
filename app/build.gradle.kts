@@ -32,6 +32,20 @@ android {
             )
         }
     }
+
+    flavorDimensions += "source"
+    productFlavors {
+        create("bbc-news") {
+            dimension = "source"
+            buildConfigField("String", "SOURCE_ID", "\"bbc-news\"")
+
+        }
+        create("the-washington-post") {
+            dimension = "source"
+            buildConfigField("String", "SOURCE_ID", "\"the-washington-post\"")
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -41,6 +55,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
