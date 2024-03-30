@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -27,7 +29,10 @@ import com.giovannidiluca.news.ui.theme.NewsTheme
 fun NewsDetailsScreen(article: Article) {
     NewsTheme {
         Surface(
-            modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            color = MaterialTheme.colorScheme.background
         ) {
             Column {
                 TopBar(stringResource(id = R.string.source))
@@ -44,8 +49,7 @@ fun DetailsCard(article: Article) {
         modifier = Modifier
             .padding(8.dp)
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         SubcomposeAsyncImage(
             model = article.urlToImage,
